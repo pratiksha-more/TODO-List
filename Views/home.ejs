@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background-color: #333;
+        }
+        .nav-item {
+            margin: 0 10px;
+        }
+        .nav-item a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #444;
+        }
+        .nav-item a:hover {
+            background-color: #555;
+        }
+        .main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        .todo {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .todo h1 {
+            margin: 0;
+        }
+        .todo a {
+            color: #333;
+            text-decoration: none;
+        }
+        .todo a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <ul class="nav">
+        <li class="nav-item"><a href="/">Home</a></li>
+        <li class="nav-item"><a href="/add">Add Todo</a></li>
+    </ul>
+
+    <div class="main">
+        <% todos.forEach(todo => { %>
+            <div class="todo">
+                <h1><a href="/todo/<%= todo._id %>"><%= todo.title %></a></h1>
+                <p><%= todo.description %></p>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>
