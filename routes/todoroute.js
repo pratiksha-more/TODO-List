@@ -5,7 +5,6 @@ const router = express.Router();
 router.get("/", async function (req, res) {
   const todos = await Todos.find();
   res.render("home", { todos });
-  // res.send("get request");
 });
 
 router.get("/add", (req, res) => {
@@ -24,24 +23,33 @@ router.post("/add", async function (req, res) {
   res.redirect("/");
 });
 
-// router.get("/todo/:id", function (req, res) {
+// router.get("/todo/:id", async function (req, res) {
 //   const { id } = req.params;
-//   const todo = todos[id];
-//   res.render("todo", { todo });
+//   try {
+//     const todo = await Todos.findById(id);
+//     if (!todo) {
+//       return res.status(404).send("Todo not found");
+//     }
+//     res.render("todo", { todo });
+//   } catch (err) {
+//     res.status(500).send("Server Error");
+//   }
 // });
 
-router.get("/todo/:id", async function (req, res) {
-  // **Error:** Should be async to handle database operations
+router.post("/delete/:id", async function (req, res) {
   const { id } = req.params;
-  // const todo = todos[id]; // **Error:** 'todos' is not defined. Fetch from DB instead.
+
   try {
-    const todo = await Todos.findById(id);
-    if (!todo) {
-      return res.status(404).send("Todo not found");
+    const DT = await Todos.findByIdAndDelete(id);
+
+    if (!DT) {
+      res.send("Todo item not found");
     }
-    res.render("todo", { todo });
-  } catch (err) {
-    res.status(500).send("Server Error");
+
+    res.redirect("/");
+  } catch (error) {
+    res.send("Failed to delete the todo item.");
   }
 });
+
 export default router;

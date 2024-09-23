@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,20 +11,25 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
         }
+
+        /* Nav styles */
         .nav {
             display: flex;
             justify-content: center;
             padding: 10px;
             background-color: #333;
         }
+
         .nav-item {
             margin: 0 10px;
         }
+
         .nav-item a {
             color: #fff;
             text-decoration: none;
@@ -31,34 +37,99 @@
             border-radius: 5px;
             background-color: #444;
         }
+
         .nav-item a:hover {
             background-color: #555;
         }
+
+
         .main {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
+            border-radius: 5px;
             background-color: #fff;
-            border-radius: 5px;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
         }
+
         .todo {
-            margin-bottom: 10px;
-            padding: 10px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+
         }
+
+
         .todo h1 {
             margin: 0;
+            font-size: 1.5em;
+            display: inline-block;
         }
+
         .todo a {
             color: #333;
             text-decoration: none;
+            font-size: 1.5em;
+            margin-bottom: 5px;
         }
+
         .todo a:hover {
             text-decoration: underline;
         }
+
+        /* Option buttons styling */
+        .option {
+            display: flex;
+            gap: 10px;
+        }
+
+        .option button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .option button:hover {
+            background-color: #555;
+        }
+
+        /* Checkbox and number styling */
+        .todo-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .todo-header input[type="checkbox"] {
+            transform: scale(1.2);
+            /* Slightly larger checkbox */
+        }
+
+        .todo-header .index-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Adjust description to give some spacing below title */
+        .todo p {
+            margin: 5px 0 0 0;
+            font-size: 1em;
+        }
     </style>
 </head>
+
 <body>
     <ul class="nav">
         <li class="nav-item"><a href="/">Home</a></li>
@@ -66,12 +137,36 @@
     </ul>
 
     <div class="main">
-        <% todos.forEach(todo => { %>
+        <% todos.forEach((todo, index)=> { %>
             <div class="todo">
-                <h1><a href="/todo/<%= todo._id %>"><%= todo.title %></a></h1>
-                <p><%= todo.description %></p>
+                <div class="todo-header">
+                    <input type="checkbox">
+                    <span class="index-number">
+                        <%= index + 1 +'.'%>
+                    </span>
+                    <h5><a href="/todo/<%= todo._id %>">
+
+                            <%= todo.title %>
+                        </a></h5>
+                </div>
+
+
+                <p>
+                    <%= todo.description %>
+                </p>
+
+                <div class="option">
+                    <form action="/delete/<%= todo._id %>" method="post">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form action="/update/<%= todo._id %>" method="get">
+                        <button type="submit">Update</button>
+                    </form>
+                </div>
             </div>
-        <% }) %>
+            <% }) %>
     </div>
 </body>
+
+
 </html>
