@@ -1,5 +1,6 @@
 import express from "express";
 import Todos from "../models/todomodel.js";
+import { render } from "ejs";
 const router = express.Router();
 
 router.get("/", async function (req, res) {
@@ -49,6 +50,25 @@ router.post("/delete/:id", async function (req, res) {
     res.redirect("/");
   } catch (error) {
     res.send("Failed to delete the todo item.");
+  }
+});
+
+router.get("/update/:id", async function (req, res) {
+  const { id } = req.params;
+  try {
+    const todo = Todos.find(id);
+
+    if (todo) {
+      const { title, description } = req.body;
+      const singleTodo = {
+        title,
+        description,
+      };
+
+      res.render("add");
+    }
+  } catch (err) {
+    res.status(500).send("Server Error");
   }
 });
 
