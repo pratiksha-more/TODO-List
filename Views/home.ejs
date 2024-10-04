@@ -127,6 +127,19 @@
             margin: 5px 0 0 0;
             font-size: 1em;
         }
+
+        .completed {
+
+
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .underline {
+            text-decoration: underline;
+
+            color: gray;
+        }
     </style>
 </head>
 
@@ -140,28 +153,28 @@
         <% todos.forEach((todo, index)=> { %>
             <div class="todo">
                 <div class="todo-header">
-                    <input type="checkbox">
+                    <input type="checkbox" class="todo-checkbox" id="todo-<%= todo._id %>"
+                        onchange="toggleComplete('<%= todo._id %>', this.checked)" <%=todo.completed ? 'checked' : '' %>
+                    >
                     <span class="index-number">
                         <%= index + 1 +'.'%>
                     </span>
-                    <h5><a href="/todo/<%= todo._id %>">
-
+                    <h5><a href="/todo/<%= todo._id %>"
+                            class="<%= todo.completed ? 'completed' : '' %> <%= todo.isUnderlined ? 'underlined' : '' %>">
                             <%= todo.title %>
                         </a></h5>
                 </div>
-
-
                 <p>
                     <%= todo.description %>
                 </p>
 
                 <div class="option">
-                    <form action="/delete/<%= todo._id %>" method="post">
+                    <form action="/delete/<%= todo._id %>" method="post" style="display: inline">
                         <button type="submit">Delete</button>
-
-                        <form action="/update/<%= todo.title %>" method="get">
-                            <button type="submit">Update</button>
-                        </form>
+                    </form>
+                    <form action="/update/<%= todo.title %>" method="get" style="display: inline">
+                        <button type=" submit">Update</button>
+                    </form>
 
                 </div>
             </div>
@@ -171,6 +184,18 @@
 
 <script>
 
+
+    function toggleComplete(id, isChecked) {
+        const titleElement = document.getElementById(`title-${id}`);
+
+        if (isChecked) {
+            titleElement.classList.add("completed");
+            titleElement.classList.remove("underlined");
+        } else {
+            titleElement.classList.remove("completed");
+            titleElement.classList.add("underlined");
+        }
+    }
 
 
 </script>
