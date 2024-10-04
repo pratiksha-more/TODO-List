@@ -24,19 +24,6 @@ router.post("/add", async function (req, res) {
   res.redirect("/");
 });
 
-// router.get("/todo/:id", async function (req, res) {
-//   const { id } = req.params;
-//   try {
-//     const todo = await Todos.findById(id);
-//     if (!todo) {
-//       return res.status(404).send("Todo not found");
-//     }
-//     res.render("todo", { todo });
-//   } catch (err) {
-//     res.status(500).send("Server Error");
-//   }
-// });
-
 router.post("/delete/:id", async function (req, res) {
   const { id } = req.params;
 
@@ -53,19 +40,40 @@ router.post("/delete/:id", async function (req, res) {
   }
 });
 
-router.get("/update/:id", async function (req, res) {
-  const { id } = req.params;
+router.get("/update/:title", async function (req, res) {
+  const { title } = req.params;
   try {
-    const todo = Todos.find(id);
+    const todo = await Todos.findOne({ title });
 
     if (todo) {
-      const { title, description } = req.body;
       const singleTodo = {
-        title,
-        description,
+        title: todo.title,
+        description: todo.description,
       };
 
-      res.render("add");
+      res.render("update", { singleTodo });
+    } else {
+      res.status(404).send("Todo not found");
+    }
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
+router.post("/update/:title", async function (req, res) {
+  const { title } = req.params;
+  const { newTitle, description } = req.body;
+
+  try {
+    const todo = await Todos.findOneAndUpdate(
+      { title },
+      { title: newTitle, description }
+    );
+
+    if (todo) {
+      res.redirect("/");
+    } else {
+      res.status(404).send("Todo not found");
     }
   } catch (err) {
     res.status(500).send("Server Error");
